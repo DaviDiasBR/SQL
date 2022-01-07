@@ -19,7 +19,7 @@ namePublisher VARCHAR (20),
 priceBook FLOAT (10,2),
 statePublisher CHAR (2),
 yearPublished CHAR (4)
-)
+);
 
 /* INSERTING DATA OF TABLE */
 
