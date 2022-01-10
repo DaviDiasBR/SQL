@@ -1,0 +1,149 @@
+/* EXPLORING VIEW POSSIBILITIES */
+
+-- Query --
+select
+upper(name) as 'Name',
+sex as 'Sex',
+upper(email) as 'Email',
+ifnull(kind,'NO EMAIL') as 'Kind',
+ifnull(number,'NO PHONE') as 'Number',
+upper(city) as 'City',
+country as 'Country'
+from client
+left join phone P
+on idClient = P.id_Client
+left join adress A
+on idClient = A.id_Client;
+
++------+-----+----------------+----------+-------------+------------+---------+
+| Name | Sex | E-mail         | Kind     | Number      | City       | Country |
++------+-----+----------------+----------+-------------+------------+---------+
+| JOHN | M   | JOHN@GMAIL.COM | Mobile   | 111111111   | CALIFORNIA | USA     |
+| JOHN | M   | JOHN@GMAIL.COM | House    | 22222222222 | CALIFORNIA | USA     |
+| JOHN | M   | JOHN@GMAIL.COM | Office   | 9999999     | CALIFORNIA | USA     |
+| MARY | F   | MARY@GMAIL.COM | House    | 194943      | CALIFORNIA | USA     |
+| DAVE | M   | DAVE@GMAIL.COM | Other    | 109499      | CALIFORNIA | USA     |
+| RYAN | M   | RYAN@GMAIL.COM | Mobile   | 954973      | CALIFORNIA | USA     |
+| RYAN | M   | RYAN@GMAIL.COM | House    | 318494849   | CALIFORNIA | USA     |
+| CATY | F   | CATY@GMAIL.COM | Office   | 166194      | CALIFORNIA | USA     |
+| BETY | F   | BETY@GMAIL.COM | House    | 64161       | CALIFORNIA | USA     |
+| KELY | M   | KELY@GMAIL.COM | Other    | 1797821     | CALIFORNIA | USA     |
+| NOAH | M   | NOAH@GMAIL.COM | NO EMAIL | NO PHONE    | CALIFORNIA | USA     |
+| TONY | M   | TONY@GMAIL.COM | NO EMAIL | NO PHONE    | CALIFORNIA | USA     |
++------+-----+----------------+----------+-------------+------------+---------+
+
+-- no need to creat or copy/paste query --
+
+CREATE VIEW V_Data
+AS
+select
+upper(name) as 'Name',
+sex as 'Sex',
+upper(email) as 'Email',
+ifnull(kind,'NO EMAIL') as 'Kind',
+ifnull(number,'NO PHONE') as 'Number',
+upper(city) as 'City',
+country as 'Country'
+from client
+left join phone P
+on idClient = P.id_Client
+left join adress A
+on idClient = A.id_Client;
+
+show tables;
+
++-------------------------+
+| Tables_in_accountsystem |
++-------------------------+
+| adress                  |
+| client                  |
+| phone                   |
+| v_data                  |
++-------------------------+
+
+desc V_Data;
+
++---------+---------------+------+-----+---------+-------+
+| Field   | Type          | Null | Key | Default | Extra |
++---------+---------------+------+-----+---------+-------+
+| Name    | varchar(30)   | YES  |     | NULL    |       |
+| Sex     | enum('M','F') | NO   |     | NULL    |       |
+| E-mail  | varchar(30)   | YES  |     | NULL    |       |
+| Kind    | varchar(8)    | NO   |     |         |       |
+| Number  | varchar(15)   | NO   |     |         |       |
+| City    | varchar(30)   | YES  |     | NULL    |       |
+| Country | varchar(30)   | YES  |     | NULL    |       |
++---------+---------------+------+-----+---------+-------+
+
+select * from V_Data;
+
++------+-----+----------------+----------+-------------+------------+---------+
+| Name | Sex | E-mail         | Kind     | Number      | City       | Country |
++------+-----+----------------+----------+-------------+------------+---------+
+| JOHN | M   | JOHN@GMAIL.COM | Mobile   | 111111111   | CALIFORNIA | USA     |
+| JOHN | M   | JOHN@GMAIL.COM | House    | 22222222222 | CALIFORNIA | USA     |
+| JOHN | M   | JOHN@GMAIL.COM | Office   | 9999999     | CALIFORNIA | USA     |
+| MARY | F   | MARY@GMAIL.COM | House    | 194943      | CALIFORNIA | USA     |
+| DAVE | M   | DAVE@GMAIL.COM | Other    | 109499      | CALIFORNIA | USA     |
+| RYAN | M   | RYAN@GMAIL.COM | Mobile   | 954973      | CALIFORNIA | USA     |
+| RYAN | M   | RYAN@GMAIL.COM | House    | 318494849   | CALIFORNIA | USA     |
+| CATY | F   | CATY@GMAIL.COM | Office   | 166194      | CALIFORNIA | USA     |
+| BETY | F   | BETY@GMAIL.COM | House    | 64161       | CALIFORNIA | USA     |
+| KELY | M   | KELY@GMAIL.COM | Other    | 1797821     | CALIFORNIA | USA     |
+| NOAH | M   | NOAH@GMAIL.COM | NO EMAIL | NO PHONE    | CALIFORNIA | USA     |
+| TONY | M   | TONY@GMAIL.COM | NO EMAIL | NO PHONE    | CALIFORNIA | USA     |
++------+-----+----------------+----------+-------------+------------+---------+
+
+-- Delete View --
+
+drop view V_Data;
+
+show tables;
+
++-------------------------+
+| Tables_in_accountsystem |
++-------------------------+
+| adress                  |
+| client                  |
+| phone                   |
++-------------------------+
+
+-- Recreating View --
+
+CREATE VIEW V_Data
+AS
+select
+upper(name) as 'Name',
+sex as 'Sex',
+upper(email) as 'Email',
+ifnull(kind,'NO EMAIL') as 'Kind',
+ifnull(number,'NO PHONE') as 'Number',
+upper(city) as 'City',
+country as 'Country'
+from client
+left join phone P
+on idClient = P.id_Client
+left join adress A
+on idClient = A.id_Client;
+
+-- selecting from view --
+
+select Name, Email, Kind, Number, LOCALTIME() as 'Time of ETL'
+from V_Data
+where kind != 'NO EMAIL';
+
++------+----------------+--------+-------------+---------------------+
+| Name | Email          | Kind   | Number      | Time of ETL         |
++------+----------------+--------+-------------+---------------------+
+| JOHN | JOHN@GMAIL.COM | Mobile | 111111111   | 2022-01-10 19:19:52 |
+| JOHN | JOHN@GMAIL.COM | House  | 22222222222 | 2022-01-10 19:19:52 |
+| JOHN | JOHN@GMAIL.COM | Office | 9999999     | 2022-01-10 19:19:52 |
+| MARY | MARY@GMAIL.COM | House  | 194943      | 2022-01-10 19:19:52 |
+| DAVE | DAVE@GMAIL.COM | Other  | 109499      | 2022-01-10 19:19:52 |
+| RYAN | RYAN@GMAIL.COM | Mobile | 954973      | 2022-01-10 19:19:52 |
+| RYAN | RYAN@GMAIL.COM | House  | 318494849   | 2022-01-10 19:19:52 |
+| CATY | CATY@GMAIL.COM | Office | 166194      | 2022-01-10 19:19:52 |
+| BETY | BETY@GMAIL.COM | House  | 64161       | 2022-01-10 19:19:52 |
+| KELY | KELY@GMAIL.COM | Other  | 1797821     | 2022-01-10 19:19:52 |
++------+----------------+--------+-------------+---------------------+
+
