@@ -1,0 +1,50 @@
+/* BASIC MODEL */
+
+-- RULES OF MODELLING
+-- 1 -> SAME KIND VALUES IN A COLUMN, CREATE A NEW TABLE;
+-- 2 -> MULTI VALUES IN A COLUMNS, CREATE A NEW TABLE;
+-- 3 -> PRIMARY KEY IN EACH TABLE;
+
+/* CREATING DATABASE*/
+
+CREATE DATABASE accountSystem;
+
+/* USING DATABASE */
+
+USE accountSystem;
+
+/* CREATING TABLES */
+
+-- Client's table
+
+CREATE TABLE Client(
+idClient INTEGER PRIMARY KEY auto_increment,
+name VARCHAR (30) NOT NULL,
+sex	 ENUM('M','F') NOT NULL,
+email VARCHAR (30) UNIQUE,
+cpf CHAR(11) UNIQUE
+);
+
+-- Client's Adress
+
+CREATE TABLE Adress (
+idAdress INTEGER PRIMARY KEY auto_increment,
+street varchar (30) NOT NULL,
+city varchar (30) NOT NULL,
+country varchar (30) NOT NULL,
+id_Client INTEGER UNIQUE, -- id_Client as UNIQUE will stablish 1-1 (one-to-one) between client/adress tables
+FOREIGN KEY(id_Client)
+REFERENCES Client(idClient)
+);
+
+-- Client's Phone
+
+CREATE TABLE Phone (
+idPhone INTEGER PRIMARY KEY auto_increment,
+kind ENUM ('Mobile', 'House', 'Office','Other'),
+number VARCHAR (15) NOT NULL,
+id_Client INTEGER, -- id_Client as NOT UNIQUE will stablish 1-n (one-to-many) between client/phone tables
+FOREIGN KEY (id_Client)
+REFERENCES Client (idClient)
+);
+
