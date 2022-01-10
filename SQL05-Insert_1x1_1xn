@@ -1,0 +1,54 @@
+/* INSERT 1X1 AND 1XN DATA */
+
+-- CLIENT TABLE --
+
+INSERT INTO client
+values
+(NULL,'john','M','john@gmail.com','99999999999'),
+(null,'mary','F','mary@gmail.com','88888888888'),
+(null,'dave','M','dave@gmail.com','77777777777'),
+(null,'ryan','M','ryan@gmail.com','66666666666'),
+(null,'caty','F','caty@gmail.com','55555555555'),
+(null,'bety','F','bety@gmail.com','44444444444'),
+(null,'kely','M','kely@gmail.com','33333333333'),
+(null,'noah','M','noah@gmail.com','22222222222'),
+(null,'tony','M','tony@gmail.com','11111111111')
+;
+
+-- ADRESS TABLE --
+INSERT INTO adress
+-- table with unique column (id_Client)
+
+INSERT INTO adress
+VALUES
+(NULL, 'Frogs street', 'California', 'USA',11),
+(NULL, 'Lions street', 'California', 'USA',12),
+(NULL, 'Sheeps street', 'California', 'USA',13),
+(NULL, 'Dogs street', 'California', 'USA',14),
+(NULL, 'Cats street', 'California', 'USA',15),
+(NULL, 'Turtles street', 'California', 'USA',16),
+(NULL, 'Pingeons street', 'California', 'USA',17),
+(NULL, 'Tigers street', 'California', 'USA',18),
+(NULL, 'Jaguars street', 'California', 'USA',19)
+;
+
+-- ERROR 1062 (23000): Duplicate entry '11' for key 'id_Client' --
+INSERT INTO adress values (NULL,'Erros streets','California', 'USA',11)
+
+-- PHONE TABLE
+
+-- No error of Duplicate entry '11' for key 'id_Client' --
+INSERT INTO phone
+VALUES
+(NULL, 'Mobile', '111111111',11),
+(NULL,'House','22222222222',11),
+(NULL,'Office','9999999',11),
+(NULL,'House','194943',12),
+(NULL,'Other','109499',13)
+(NULL, 'Mobile','954973',14),
+(NULL,'House','318494849',14),
+(NULL,'Office','166194',15),
+(NULL,'House','64161',16),
+(NULL,'Other','1797821',17)
+;
+
