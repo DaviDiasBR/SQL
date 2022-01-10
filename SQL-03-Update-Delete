@@ -1,0 +1,45 @@
+/* UPDATE AND DELETE */
+
+/* Show databases */
+
+SHOW DATABASES;
+
+/* Use exercise database */
+
+USE livraria;
+
+/* Explore livraria table's */
+
+SHOW TABLES;
+
+DESC livros;
+
+SELECT *
+FROM livros;
+
+/* update information */
+
+UPDATE livros
+SET statePublisher = 'SP'
+WHERE bookAuthor = 'Eduardo Santos'
+
+UPDATE livros
+SET namePublisher = 'Atlas'
+WHERE bookAuthor IN ('Geraldo Francisco', 'Leda Silva');
+
+/* insert information */
+
+INSERT INTO livros (bookName, bookAuthor)
+VALUES
+('The name of the wind', 'Patrick Rothfuss'),
+('The lord of the rings', 'J. R. R. Tolkien');
+ 
+ /* delete information */
+ 
+ DELETE FROM livros
+ WHERE bookName LIKE '%The%';
+ 
+ -- OPERATOR % --
+ --operator %name -> anything(name) after %;
+ -- operator name% -> anything(name) before %;
+ -- operator %name% -> anything(name) between %;
