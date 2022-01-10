@@ -1,0 +1,85 @@
+/* JOIN */
+
+SELECT name, email, idclient
+from client;
+	
++------+----------------+----------+
+| name | email          | idclient |
++------+----------------+----------+
+| john | john@gmail.com |       11 |
+| mary | mary@gmail.com |       12 |
+| dave | dave@gmail.com |       13 |
+| ryan | ryan@gmail.com |       14 |
+| caty | caty@gmail.com |       15 |
+| bety | bety@gmail.com |       16 |
+| kely | kely@gmail.com |       17 |
+| noah | noah@gmail.com |       18 |
+| tony | tony@gmail.com |       19 |
++------+----------------+----------+
+	
+SELECT id_Client, city, country
+from adress;
+	
++-----------+------------+---------+
+| id_Client | city       | country |
++-----------+------------+---------+
+|        11 | California | USA     |
+|        12 | California | USA     |
+|        13 | California | USA     |
+|        14 | California | USA     |
+|        15 | California | USA     |
+|        16 | California | USA     |
+|        17 | California | USA     |
+|        18 | California | USA     |
+|        19 | California | USA     |
++-----------+------------+---------+
+
+-- inner join -> 2 tables
+
+select UPPER(name) as 'client', sex, email, city, country
+from client
+inner join adress
+on idClient = id_Client;
+
++--------+-----+----------------+------------+---------+
+| client | sex | email          | city       | country |
++--------+-----+----------------+------------+---------+
+| JOHN   | M   | john@gmail.com | California | USA     |
+| MARY   | F   | mary@gmail.com | California | USA     |
+| DAVE   | M   | dave@gmail.com | California | USA     |
+| RYAN   | M   | ryan@gmail.com | California | USA     |
+| CATY   | F   | caty@gmail.com | California | USA     |
+| BETY   | F   | bety@gmail.com | California | USA     |
+| KELY   | M   | kely@gmail.com | California | USA     |
+| NOAH   | M   | noah@gmail.com | California | USA     |
+| TONY   | M   | tony@gmail.com | California | USA     |
++--------+-----+----------------+------------+---------+
+
+select upper(name) as 'Name',email, kind, number
+from client
+inner join phone
+on idClient = id_Client;
+
+-- inner join -> 3 tables and same name on column using cursor
+
+select UPPER(c.name) as Name, c.sex, d.city, d.country, e.kind, e.number
+from client c -- c pointer to client table
+inner join adress d -- d pointer to adress table
+on c.idClient = d.id_Client
+inner join phone e -- e pointer to phone table
+on c.idClient = e.id_Client;
+
++------+-----+------------+---------+--------+-------------+
+| Name | sex | city       | country | kind   | number      |
++------+-----+------------+---------+--------+-------------+
+| JOHN | M   | California | USA     | Mobile | 111111111   |
+| JOHN | M   | California | USA     | House  | 22222222222 |
+| JOHN | M   | California | USA     | Office | 9999999     |
+| MARY | F   | California | USA     | House  | 194943      |
+| DAVE | M   | California | USA     | Other  | 109499      |
+| RYAN | M   | California | USA     | Mobile | 954973      |
+| RYAN | M   | California | USA     | House  | 318494849   |
+| CATY | F   | California | USA     | Office | 166194      |
+| BETY | F   | California | USA     | House  | 64161       |
+| KELY | M   | California | USA     | Other  | 1797821     |
++------+-----+------------+---------+--------+-------------+
