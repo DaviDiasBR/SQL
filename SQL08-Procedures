@@ -1,0 +1,83 @@
+/* STORED PROCEDURES */
+
+CREATE DATABASE Courses;
+
+USE Courses;
+
+CREATE TABLE Course(
+idCourse INTEGER PRIMARY KEY auto_increment,
+nameCourse VARCHAR (30) NOT NULL,
+hoursCourse INTEGER (2) NOT NULL,
+priceCourse FLOAT (10,2) NOT NULL,
+modelCourse ENUM('PRESENCIAL', 'ONLINE', 'HYBRID')
+);
+
+-- INPUT PROCEDURE --
+delimiter #;
+status
+
+CREATE PROCEDURE CourseInput(
+nameCourse VARCHAR (30),
+hoursCourse INTEGER (2),
+priceCourse FLOAT (10,2),
+modelCourse ENUM('PRESENCIAL', 'ONLINE', 'HYBRID'))
+BEGIN
+	INSERT INTO Course VALUES(
+	NULL, nameCourse, hoursCourse, priceCourse, modelCourse);
+END #
+
+delimiter ;#
+status
+
+-- USING DELIMITER --
+
+CALL CourseInput('Basic BI', 30, 499.99, 'PRESENCIAL');
+CALL CourseInput('Intermediate BI', 60, 799.99, 'PRESENCIAL');
+CALL CourseInput('Advanced BI', 120, 1999.99, 'PRESENCIAL');
+CALL CourseInput('SQL', 40, 200.99, 'PRESENCIAL');
+
+Select * from Course;
+
++----------+-----------------+-------------+-------------+-------------+
+| idCourse | nameCourse      | hoursCourse | priceCourse | modelCourse |
++----------+-----------------+-------------+-------------+-------------+
+|        1 | Basic BI        |          30 |      499.99 | PRESENCIAL  |
+|        2 | Intermediate BI |          60 |      799.99 | PRESENCIAL  |
+|        3 | Advanced BI     |         120 |     1999.99 | PRESENCIAL  |
+|        4 | SQL             |          40 |      200.99 | PRESENCIAL  |
++----------+-----------------+-------------+-------------+-------------+
+
+-- CREATING ANOTHER PROCEDURE --
+
+delimiter #;
+
+CREATE PROCEDURE CourseSelect ()
+	BEGIN
+		select * from Course;
+	END #
+	
+delimiter ;#
+
+-- RESULTS --
+
+show PROCEDURE status
+WHERE db = 'Courses';
+
++---------+--------------+-----------+----------------+---------------------+---------------------+---------------+---------+----------------------+----------------------+--------------------+
+| Db      | Name         | Type      | Definer        | Modified            | Created             | Security_type | Comment | character_set_client | collation_connection | Database Collation |
++---------+--------------+-----------+----------------+---------------------+---------------------+---------------+---------+----------------------+----------------------+--------------------+
+| courses | CourseInput  | PROCEDURE | root@localhost | 2022-01-10 21:35:47 | 2022-01-10 21:35:47 | DEFINER       |         | utf8                 | utf8_general_ci      | utf8_general_ci    |
+| courses | CourseSelect | PROCEDURE | root@localhost | 2022-01-12 11:12:56 | 2022-01-12 11:12:56 | DEFINER       |         | utf8                 | utf8_general_ci      | utf8_general_ci    |
++---------+--------------+-----------+----------------+---------------------+---------------------+---------------+---------+----------------------+----------------------+--------------------+
+
+Call CourseSelect;
+
++----------+-----------------+-------------+-------------+-------------+
+| idCourse | nameCourse      | hoursCourse | priceCourse | modelCourse |
++----------+-----------------+-------------+-------------+-------------+
+|        1 | Basic BI        |          30 |      499.99 | PRESENCIAL  |
+|        2 | Intermediate BI |          60 |      799.99 | PRESENCIAL  |
+|        3 | Advanced BI     |         120 |     1999.99 | PRESENCIAL  |
+|        4 | SQL             |          40 |      200.99 | PRESENCIAL  |
++----------+-----------------+-------------+-------------+-------------+
+
