@@ -1,0 +1,271 @@
+/* COLUMN AND ROW */
+
+-- Understand table 
+
+show databases;
+
+uses courses;
+
+show tables;
+
+select * from course;
+
+desc course;
+
+-- Create TABLE
+
+create table Employee(
+idEmployee int PRIMARY KEY auto_increment,
+nameEmployee varchar (30),
+sexEmployee enum ('M','F'),
+departmentEmployee varchar (30),
+positionEmployee varchar (30)
+);
+
+show tables;
+
++-------------------+
+| Tables_in_courses |
++-------------------+
+| course            |
+| employee          |
++-------------------+
+
+-- Insert VALUES
+
+insert into Employee (nameEmployee,sexEmployee,departmentEmployee,positionEmployee)
+values
+('Davi','M','Sales','Salesman'),
+('Ryan','M','Sales','Salesman'),
+('Noah','M','Sales','Salesman'),
+('Tom','M','Sales','Salesman');
+
++------------+--------------+-------------+--------------------+------------------+
+| idEmployee | nameEmployee | sexEmployee | departmentEmployee | positionEmployee |
++------------+--------------+-------------+--------------------+------------------+
+|          1 | Davi         | M           | Sales              | Salesman         |
+|          2 | Ryan         | M           | Sales              | Salesman         |
+|          3 | Noah         | M           | Sales              | Salesman         |
+|          4 | Tom          | M           | Sales              | Salesman         |
++------------+--------------+-------------+--------------------+------------------+
+
+update Employee
+set nameEmployee = 'Gael'
+where nameEmployee = 'Tom';
+
++------------+--------------+-------------+--------------------+------------------+
+| idEmployee | nameEmployee | sexEmployee | departmentEmployee | positionEmployee |
++------------+--------------+-------------+--------------------+------------------+
+|          1 | Davi         | M           | Sales              | Salesman         |
+|          2 | Ryan         | M           | Sales              | Salesman         |
+|          3 | Noah         | M           | Sales              | Salesman         |
+|          4 | Gael         | M           | Sales              | Salesman         |
++------------+--------------+-------------+--------------------+------------------+
+
+show tables;
+
+-- Create TABLE
+
+call courseSelect;
+
++----------+-----------------+-------------+-------------+-------------+
+| idCourse | nameCourse      | hoursCourse | priceCourse | modelCourse |
++----------+-----------------+-------------+-------------+-------------+
+|        1 | Basic BI        |          30 |      499.99 | PRESENCIAL  |
+|        2 | Intermediate BI |          60 |      799.99 | PRESENCIAL  |
+|        3 | Advanced BI     |         120 |     1999.99 | PRESENCIAL  |
+|        4 | SQL             |          40 |      200.99 | PRESENCIAL  |
++----------+-----------------+-------------+-------------+-------------+
+
+create table salesRegister(
+idSales int PRIMARY KEY auto_increment,
+qntSales int (3),
+dateSales date,
+id_Course int,
+id_Employee int,
+	foreign key (id_course) references course(idCourse),
+	foreign key (id_Employee) references Employee(idEmployee)
+);
+
+-- Insert VALUES
+
+insert into 
+salesRegister (qntSales, dateSales, id_Course, id_Employee) 
+values 
+(3,'2020-01-01',1,1),
+(5,'2020-01-01',2,2),
+(6,'2020-01-01',1,3),
+(8,'2020-01-01',3,4),
+(10,'2020-01-02',4,1),
+(5,'2020-01-02',1,4),
+(4,'2020-01-03',1,4),
+(6,'2020-01-03',2,1),
+(9,'2020-01-02',3,2),
+(2,'2020-01-04',3,3),
+(1,'2020-01-05',3,3),
+(1,'2020-01-04',2,3),
+(8,'2020-01-05',4,3),
+(3,'2020-01-06',4,1),
+(7,'2020-01-06',1,2),
+(3,'2020-01-07',4,1),
+(4,'2020-01-07',1,2),
+(10,'2020-01-07',2,3),
+(8,'2020-01-08',2,3),
+(2,'2020-01-08',1,1),
+(3,'2020-01-08',3,4),
+(7,'2020-01-09',3,4),
+(1,'2020-01-09',4,1),
+(13,'2020-01-10',4,1),
+(1,'2020-01-11',4,1),
+(1,'2020-01-11',4,2),
+(2,'2020-01-11',1,2),
+(8,'2020-01-11',2,3),
+(9,'2020-01-11',2,2),
+(7,'2020-01-11',1,4),
+(7,'2020-01-12',3,4),
+(6,'2020-01-12',1,2),
+(5,'2020-01-12',3,3),
+(4,'2020-01-13',1,2),
+(2,'2020-01-13',2,1),
+(1,'2020-01-14',1,2),
+(2,'2020-01-15',4,4),
+(9,'2020-01-16',4,3),
+(9,'2020-01-17',4,1);
+
+select * from salesRegister;
+
++---------+----------+------------+-----------+-------------+
+| idSales | qntSales | dateSales  | id_Course | id_Employee |
++---------+----------+------------+-----------+-------------+
+|       2 |        3 | 2020-01-01 |         1 |           1 |
+|       3 |        5 | 2020-01-01 |         2 |           2 |
+|       4 |        6 | 2020-01-01 |         1 |           3 |
+|       5 |        8 | 2020-01-01 |         3 |           4 |
+|       6 |       10 | 2020-01-02 |         4 |           1 |
+|       7 |        5 | 2020-01-02 |         1 |           4 |
+|       8 |        4 | 2020-01-03 |         1 |           4 |
+|       9 |        6 | 2020-01-03 |         2 |           1 |
+|      10 |        9 | 2020-01-02 |         3 |           2 |
+|      11 |        2 | 2020-01-04 |         3 |           3 |
+|      12 |        1 | 2020-01-05 |         3 |           3 |
+|      13 |        1 | 2020-01-04 |         2 |           3 |
+|      14 |        8 | 2020-01-05 |         4 |           3 |
+|      15 |        3 | 2020-01-06 |         4 |           1 |
+|      16 |        7 | 2020-01-06 |         1 |           2 |
+|      17 |        3 | 2020-01-07 |         4 |           1 |
+|      18 |        4 | 2020-01-07 |         1 |           2 |
+|      19 |       10 | 2020-01-07 |         2 |           3 |
+|      20 |        8 | 2020-01-08 |         2 |           3 |
+|      21 |        2 | 2020-01-08 |         1 |           1 |
+|      22 |        3 | 2020-01-08 |         3 |           4 |
+|      23 |        7 | 2020-01-09 |         3 |           4 |
+|      24 |        1 | 2020-01-09 |         4 |           1 |
+|      25 |       13 | 2020-01-10 |         4 |           1 |
+|      26 |        1 | 2020-01-11 |         4 |           1 |
+|      27 |        1 | 2020-01-11 |         4 |           2 |
+|      28 |        2 | 2020-01-11 |         1 |           2 |
+|      29 |        8 | 2020-01-11 |         2 |           3 |
+|      30 |        9 | 2020-01-11 |         2 |           2 |
+|      31 |        7 | 2020-01-11 |         1 |           4 |
+|      32 |        7 | 2020-01-12 |         3 |           4 |
+|      33 |        6 | 2020-01-12 |         1 |           2 |
+|      34 |        5 | 2020-01-12 |         3 |           3 |
+|      35 |        4 | 2020-01-13 |         1 |           2 |
+|      36 |        2 | 2020-01-13 |         2 |           1 |
+|      37 |        1 | 2020-01-14 |         1 |           2 |
+|      38 |        2 | 2020-01-15 |         4 |           4 |
+|      39 |        9 | 2020-01-16 |         4 |           3 |
+|      40 |        9 | 2020-01-17 |         4 |           1 |
++---------+----------+------------+-----------+-------------+
+
+-- Create Sales Reporting
+
+delimiter //;
+
+create procedure SalesReporting()
+BEGIN
+select 
+	datesales as 'Date', 
+	nameCourse as 'Course', 
+	qntSales as 'Qnt', 
+	priceCourse as 'Price', 
+	(priceCourse * qntSales) as 'Total',
+	nameEmployee as 'Salesman'
+from salesRegister
+inner join course
+on idCourse = id_Course
+inner join Employee
+on idEmployee = id_Employee;
+end//
+
+call SalesReporting//
+
++------------+-----------------+------+---------+----------+----------+
+| Date       | Course          | Qnt  | Price   | Total    | Salesman |
++------------+-----------------+------+---------+----------+----------+
+| 2020-01-01 | Basic BI        |    3 |  499.99 |  1499.97 | Davi     |
+| 2020-01-08 | Basic BI        |    2 |  499.99 |   999.98 | Davi     |
+| 2020-01-03 | Intermediate BI |    6 |  799.99 |  4799.94 | Davi     |
+| 2020-01-13 | Intermediate BI |    2 |  799.99 |  1599.98 | Davi     |
+| 2020-01-02 | SQL             |   10 |  200.99 |  2009.90 | Davi     |
+| 2020-01-06 | SQL             |    3 |  200.99 |   602.97 | Davi     |
+| 2020-01-07 | SQL             |    3 |  200.99 |   602.97 | Davi     |
+| 2020-01-09 | SQL             |    1 |  200.99 |   200.99 | Davi     |
+| 2020-01-10 | SQL             |   13 |  200.99 |  2612.87 | Davi     |
+| 2020-01-11 | SQL             |    1 |  200.99 |   200.99 | Davi     |
+| 2020-01-17 | SQL             |    9 |  200.99 |  1808.91 | Davi     |
+| 2020-01-06 | Basic BI        |    7 |  499.99 |  3499.93 | Ryan     |
+| 2020-01-07 | Basic BI        |    4 |  499.99 |  1999.96 | Ryan     |
+| 2020-01-11 | Basic BI        |    2 |  499.99 |   999.98 | Ryan     |
+| 2020-01-12 | Basic BI        |    6 |  499.99 |  2999.94 | Ryan     |
+| 2020-01-13 | Basic BI        |    4 |  499.99 |  1999.96 | Ryan     |
+| 2020-01-14 | Basic BI        |    1 |  499.99 |   499.99 | Ryan     |
+| 2020-01-01 | Intermediate BI |    5 |  799.99 |  3999.95 | Ryan     |
+| 2020-01-11 | Intermediate BI |    9 |  799.99 |  7199.91 | Ryan     |
+| 2020-01-02 | Advanced BI     |    9 | 1999.99 | 17999.91 | Ryan     |
+| 2020-01-11 | SQL             |    1 |  200.99 |   200.99 | Ryan     |
+| 2020-01-01 | Basic BI        |    6 |  499.99 |  2999.94 | Noah     |
+| 2020-01-04 | Intermediate BI |    1 |  799.99 |   799.99 | Noah     |
+| 2020-01-07 | Intermediate BI |   10 |  799.99 |  7999.90 | Noah     |
+| 2020-01-08 | Intermediate BI |    8 |  799.99 |  6399.92 | Noah     |
+| 2020-01-11 | Intermediate BI |    8 |  799.99 |  6399.92 | Noah     |
+| 2020-01-04 | Advanced BI     |    2 | 1999.99 |  3999.98 | Noah     |
+| 2020-01-05 | Advanced BI     |    1 | 1999.99 |  1999.99 | Noah     |
+| 2020-01-12 | Advanced BI     |    5 | 1999.99 |  9999.95 | Noah     |
+| 2020-01-05 | SQL             |    8 |  200.99 |  1607.92 | Noah     |
+| 2020-01-16 | SQL             |    9 |  200.99 |  1808.91 | Noah     |
+| 2020-01-02 | Basic BI        |    5 |  499.99 |  2499.95 | Gael     |
+| 2020-01-03 | Basic BI        |    4 |  499.99 |  1999.96 | Gael     |
+| 2020-01-11 | Basic BI        |    7 |  499.99 |  3499.93 | Gael     |
+| 2020-01-01 | Advanced BI     |    8 | 1999.99 | 15999.92 | Gael     |
+| 2020-01-08 | Advanced BI     |    3 | 1999.99 |  5999.97 | Gael     |
+| 2020-01-09 | Advanced BI     |    7 | 1999.99 | 13999.93 | Gael     |
+| 2020-01-12 | Advanced BI     |    7 | 1999.99 | 13999.93 | Gael     |
+| 2020-01-15 | SQL             |    2 |  200.99 |   401.98 | Gael     |
++------------+-----------------+------+---------+----------+----------+
+
+-- Create total sales by employee
+
+select 
+	nameEmployee as 'Salesman',
+	sum(qntSales) as 'Qnt', 
+	sum(priceCourse * qntSales) as 'Total',
+	year(dateSales) as 'Year',
+	date(now()) as 'Extraction Date'
+from salesRegister
+inner join course
+on idCourse = id_Course
+inner join Employee
+on idEmployee = id_Employee
+group by nameEmployee
+order by 3 desc
+//
+
++----------+------+----------+------+-----------------+
+| Salesman | Qnt  | Total    | Year | Extraction Date |
++----------+------+----------+------+-----------------+
+| Gael     |   43 | 58401.57 | 2020 | 2022-01-12      |
+| Noah     |   58 | 44016.42 | 2020 | 2022-01-12      |
+| Ryan     |   48 | 41400.52 | 2020 | 2022-01-12      |
+| Davi     |   53 | 16939.47 | 2020 | 2022-01-12      |
++----------+------+----------+------+-----------------+
