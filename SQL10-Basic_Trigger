@@ -1,0 +1,104 @@
+/* TRIGGER */
+
+create database Sistema;
+
+use Sistema;
+
+-- Create Tables --
+
+create table usuarioSistema(
+idUsuario int primary key auto_increment,
+nameUsuario varchar (30),
+loginUsuario varchar (30),
+senha varchar (30)
+);
+
+create table bkp_usuarioSistema(
+idBackup int primary key auto_increment,
+idUsuario int,
+nameUsuario varchar (30),
+loginUsuario varchar (30)
+);
+
+show tables;
+
++--------------------+
+| Tables_in_sistema  |
++--------------------+
+| bkp_usuariosistema |
+| usuariosistema     |
++--------------------+
+
+desc usuarioSistema;
+
++--------------+-------------+------+-----+---------+----------------+
+| Field        | Type        | Null | Key | Default | Extra          |
++--------------+-------------+------+-----+---------+----------------+
+| idUsuario    | int(11)     | NO   | PRI | NULL    | auto_increment |
+| nameUsuario  | varchar(30) | YES  |     | NULL    |                |
+| loginUsuario | varchar(30) | YES  |     | NULL    |                |
+| senha        | varchar(30) | YES  |     | NULL    |                |
++--------------+-------------+------+-----+---------+----------------+
+
+desc bkp_usuarioSistema
+
++--------------+-------------+------+-----+---------+----------------+
+| Field        | Type        | Null | Key | Default | Extra          |
++--------------+-------------+------+-----+---------+----------------+
+| idBackup     | int(11)     | NO   | PRI | NULL    | auto_increment |
+| idUsuario    | int(11)     | YES  |     | NULL    |                |
+| nameUsuario  | varchar(30) | YES  |     | NULL    |                |
+| loginUsuario | varchar(30) | YES  |     | NULL    |                |
++--------------+-------------+------+-----+---------+----------------+
+
+-- Create Trigger --
+
+demiliter //
+
+create trigger bkp_usuarioSistema
+before delete on usuarioSistema
+for each row
+	begin
+insert into bkp_usuarioSistema values 
+	(null, old.idUsuario, old.nameUsuario, old.loginUsuario);
+	end //
+
+-- Insert Data --
+
+insert into usuarioSistema (nameUsuario, loginUsuario, senha) values
+	('Davi', 'DaviDias', '1234'),
+	('Ryan', 'RyanDias', '5678'),
+	('Noah','NoahDias','9101')
+	//
+
+select * from usuarioSistema//
+
++-----------+-------------+--------------+-------+
+| idUsuario | nameUsuario | loginUsuario | senha |
++-----------+-------------+--------------+-------+
+|         1 | Davi        | DaviDias     | 1234  |
+|         2 | Ryan        | RyanDias     | 5678  |
+|         3 | Noah        | NoahDias     | 9101  |
++-----------+-------------+--------------+-------+
+
+-- Delete Data --
+
+delete from usuarioSistema
+	where idUsuario = 1 //
+
+select * from usuarioSistema//
+
++-----------+-------------+--------------+-------+
+| idUsuario | nameUsuario | loginUsuario | senha |
++-----------+-------------+--------------+-------+
+|         2 | Ryan        | RyanDias     | 5678  |
+|         3 | Noah        | NoahDias     | 9101  |
++-----------+-------------+--------------+-------+
+
+select * from bkp_usuarioSistema//
+
++----------+-----------+-------------+--------------+
+| idBackup | idUsuario | nameUsuario | loginUsuario |
++----------+-----------+-------------+--------------+
+|        1 |         1 | Davi        | DaviDias     |
++----------+-----------+-------------+--------------+
