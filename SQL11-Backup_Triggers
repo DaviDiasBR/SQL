@@ -1,0 +1,78 @@
+/* BACKUP TRIGGERS AND DATABASE COMMUNICATION */
+
+-- Create database and table --
+
+create database store;
+
+use store;
+
+create table product(
+idProduct int primary key auto_increment,
+nameProduct varchar (30),
+priceProduct float (10,2)
+);
+
+-- Create database and table --
+
+create database store_backup;
+
+use store_backup;
+
+create table product_bkp(
+idbkpProduct int primary key auto_increment,
+idProductBKP int,
+nameProductBKP varchar (30),
+priceProductBKP float (10,2)
+);
+
+-- Create trigger --
+
+use store;
+
+delimiter //
+
+create trigger T_bkp_product
+	after insert on product /* after insert, data goes to backup */
+	for each row
+		begin
+			insert into store_backup.product_bkp 
+				values (null,new.idProduct,new.nameProduct,new.priceProduct);
+		end
+	//
+
+-- Insert Values
+
+insert into product 
+	values (null, 'mouse','11.99'),
+	(null, 'keyboard','21.99'),
+	(null, 'webcam','31.99'),
+	(null, 'mousepad','3.99')
+	//
+
+-- Results --
+
+use store //
+
+select * from product //
+
++-----------+-------------+--------------+
+| idProduct | nameProduct | priceProduct |
++-----------+-------------+--------------+
+|         1 | mouse       |        11.99 |
+|         2 | keyboard    |        21.99 |
+|         3 | webcam      |        31.99 |
+|         4 | mousepad    |         3.99 |
++-----------+-------------+--------------+
+
+use store_backup //
+
+select * from product_bkp //
+
++--------------+--------------+----------------+-----------------+
+| idbkpProduct | idProductBKP | nameProductBKP | priceProductBKP |
++--------------+--------------+----------------+-----------------+
+|            1 |            1 | mouse          |           11.99 |
+|            2 |            2 | keyboard       |           21.99 |
+|            3 |            3 | webcam         |           31.99 |
+|            4 |            4 | mousepad       |            3.99 |
++--------------+--------------+----------------+-----------------+
