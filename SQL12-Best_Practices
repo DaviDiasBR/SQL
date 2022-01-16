@@ -1,0 +1,113 @@
+/* BEST PRACTICES */
+
+-- Constraints after creation of tables
+
+create database bestpractice;
+
+	use bestpractice;
+
+create table employee (
+idemployee int,
+name varchar (30),
+phone char (10),
+email varchar(30)
+);
+
+create table department (
+iddepartment int,
+namedepartment varchar (30),
+phonedeparment char (10),
+emaildeparment varchar (30)
+);
+
+desc department;
+
++----------------+-------------+------+-----+---------+-------+
+| Field          | Type        | Null | Key | Default | Extra |
++----------------+-------------+------+-----+---------+-------+
+| iddepartment   | int(11)     | YES  |     | NULL    |       |
+| namedepartment | varchar(30) | YES  |     | NULL    |       |
+| phonedeparment | char(10)    | YES  |     | NULL    |       |
+| emaildeparment | varchar(30) | YES  |     | NULL    |       |
++----------------+-------------+------+-----+---------+-------+
+
+alter table department
+	add constraint pk_department
+	primary key (iddepartment);
+
++----------------+-------------+------+-----+---------+-------+
+| Field          | Type        | Null | Key | Default | Extra |
++----------------+-------------+------+-----+---------+-------+
+| iddepartment   | int(11)     | NO   | PRI | NULL    |       |
+| namedepartment | varchar(30) | YES  |     | NULL    |       |
+| phonedeparment | char(10)    | YES  |     | NULL    |       |
+| emaildeparment | varchar(30) | YES  |     | NULL    |       |
++----------------+-------------+------+-----+---------+-------+
+
+desc employee;
+
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| idemployee | int(11)     | YES  |     | NULL    |       |
+| name       | varchar(30) | YES  |     | NULL    |       |
+| phone      | char(10)    | YES  |     | NULL    |       |
+| email      | varchar(30) | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+
+alter table employee
+	add column id_department int;
+
+desc employee;
+
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| idemployee    | int(11)     | YES  |     | NULL    |       |
+| name          | varchar(30) | YES  |     | NULL    |       |
+| phone         | char(10)    | YES  |     | NULL    |       |
+| email         | varchar(30) | YES  |     | NULL    |       |
+| id_department | int(11)     | YES  |     | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+
+
+alter table employee
+	modify id_department int not null;
+
++----------------+-------------+------+-----+---------+-------+
+| Field          | Type        | Null | Key | Default | Extra |
++----------------+-------------+------+-----+---------+-------+
+| iddepartment   | int(11)     | NO   | PRI | NULL    |       |
+| namedepartment | varchar(30) | YES  |     | NULL    |       |
+| phonedeparment | char(10)    | YES  |     | NULL    |       |
+| emaildeparment | varchar(30) | YES  |     | NULL    |       |
++----------------+-------------+------+-----+---------+-------+
+
+alter table employee	
+	add constraint fk_employee_department
+	foreign key (id_department)
+	references department(iddepartment);
+
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| idemployee    | int(11)     | YES  |     | NULL    |       |
+| name          | varchar(30) | YES  |     | NULL    |       |
+| phone         | char(10)    | YES  |     | NULL    |       |
+| email         | varchar(30) | YES  |     | NULL    |       |
+| id_department | int(11)     | NO   | MUL | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+
+alter table employee	
+	add constraint pkemployee
+	primary key (idemployee);
+
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| idemployee    | int(11)     | NO   | PRI | NULL    |       |
+| name          | varchar(30) | YES  |     | NULL    |       |
+| phone         | char(10)    | YES  |     | NULL    |       |
+| email         | varchar(30) | YES  |     | NULL    |       |
+| id_department | int(11)     | NO   | MUL | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
