@@ -1,0 +1,105 @@
+/* AUDITING TABLE */
+
+create database store;
+
+use store;
+
+create table product(
+idProduct int primary key AUTO_INCREMENT,
+nameProduct varchar (30),
+priceProduct float (10,2)
+);
+
+desc product;
+
++--------------+-------------+------+-----+---------+----------------+
+| Field        | Type        | Null | Key | Default | Extra          |
++--------------+-------------+------+-----+---------+----------------+
+| idProduct    | int(11)     | NO   | PRI | NULL    | auto_increment |
+| nameProduct  | varchar(30) | YES  |     | NULL    |                |
+| priceProduct | float(10,2) | YES  |     | NULL    |                |
++--------------+-------------+------+-----+---------+----------------+
+
+insert into product values
+	(null, 'ball', 9.99),
+	(null,'dino',12.99),
+	(null, 'dice_D8',7.99),
+	(null, 'uno',10.99);
+
+select * from product;
+
++-----------+-------------+--------------+
+| idProduct | nameProduct | priceProduct |
++-----------+-------------+--------------+
+|         1 | ball        |         9.99 |
+|         2 | dino        |        12.99 |
+|         3 | dice_D8     |         7.99 |
+|         4 | uno         |        10.99 |
++-----------+-------------+--------------+
+
+create database backup;
+
+use backup;
+
+create table bkp_product(
+idbkpproduct int primary key AUTO_INCREMENT,
+idProduct int (11),
+nameProduct varchar (30),
+priceProduct float (10,2),
+newpriceProduct float (10,2),
+alteredDate DATETIME,
+user varchar (30),
+event varchar (1)
+);
+
+use store;
+
+delimiter //
+
+create trigger Audit_Prod
+	after update on product
+	for each row
+	begin
+	insert into backup.bkp_product values (null, old.idProduct,old.nameProduct,
+		old.priceProduct,new.priceProduct,now(),CURRENT_USER(),'U');
+	end//
+
+update product set priceProduct = 10.99
+	where idProduct = 1//
+
+select * from product//
+
++-----------+-------------+--------------+
+| idProduct | nameProduct | priceProduct |
++-----------+-------------+--------------+
+|         1 | ball        |        10.99 |
+|         2 | dino        |        12.99 |
+|         3 | dice_D8     |         7.99 |
+|         4 | uno         |        10.99 |
++-----------+-------------+--------------+
+
+select * from backup.bkp_product //
+
+update product set priceProduct = 11.99
+	where idProduct = 1//
+
+update product set priceProduct = 9.99
+	where idProduct = 1//
+
+update product set priceProduct = 12.59
+	where idProduct = 2//
+
+update product set priceProduct = 13.59
+	where idProduct = 2//
+
+select * from backup.bkp_product //
+
++--------------+-----------+-------------+--------------+-----------------+---------------------+----------------+-------+
+| idbkpproduct | idProduct | nameProduct | priceProduct | newpriceProduct | alteredDate         | user           | event |
++--------------+-----------+-------------+--------------+-----------------+---------------------+----------------+-------+
+|            1 |         1 | ball        |         9.99 |           10.99 | 2022-01-19 11:33:31 | root@localhost | U     |
+|            2 |         1 | ball        |        10.99 |           11.99 | 2022-01-19 11:36:19 | root@localhost | U     |
+|            3 |         1 | ball        |        11.99 |            9.99 | 2022-01-19 11:36:19 | root@localhost | U     |
+|            4 |         2 | dino        |        12.99 |           12.59 | 2022-01-19 11:36:19 | root@localhost | U     |
+|            5 |         2 | dino        |        12.59 |           13.59 | 2022-01-19 11:36:19 | root@localhost | U     |
++--------------+-----------+-------------+--------------+-----------------+---------------------+----------------+-------+
